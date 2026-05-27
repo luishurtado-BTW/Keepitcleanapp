@@ -3,6 +3,7 @@ import Header from '../components/layout/Header';
 import IncomeSummary from '../components/income/IncomeSummary';
 import IncomeList from '../components/income/IncomeList';
 import DistributionCard from '../components/income/DistributionCard';
+import WeeklyBreakdown from '../components/income/WeeklyBreakdown';
 import { useIncome } from '../hooks/useIncome';
 import { LoadingSpinner } from '../components/shared/LoadingSpinner';
 import { CalendarRange, Sparkles } from 'lucide-react';
@@ -19,7 +20,7 @@ export const Income: React.FC = () => {
 
   const [editingAppointment, setEditingAppointment] = useState<Appointment | null>(null);
 
-  const { filteredAppointments, summary, isLoading } = useIncome(selectedMonth);
+  const { filteredAppointments, summary, weeklySplits, isLoading } = useIncome(selectedMonth);
 
   return (
     <div className="flex flex-col gap-6 p-4 md:p-0">
@@ -59,7 +60,10 @@ export const Income: React.FC = () => {
           {/* 2. Visual CSS Commission Split progress bar */}
           <DistributionCard summary={summary} />
 
-          {/* 3. Transaction list for completed bookings */}
+          {/* 3. Weekly breakdown by calendar week */}
+          <WeeklyBreakdown splits={weeklySplits} />
+
+          {/* 4. Transaction list for completed bookings */}
           <div className="mt-2">
             <IncomeList appointments={filteredAppointments} onEdit={setEditingAppointment} />
           </div>

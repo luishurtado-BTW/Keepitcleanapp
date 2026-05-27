@@ -5,7 +5,8 @@ import { Appointment } from '../types/appointment';
 import { 
   calculateIncomeDistribution, 
   filterAppointmentsByMonth, 
-  getDetailedIncomeList 
+  getDetailedIncomeList,
+  getWeeklySplits
 } from '../utils/calculations';
 
 export const useIncome = (selectedYearMonth: string) => {
@@ -42,11 +43,17 @@ export const useIncome = (selectedYearMonth: string) => {
     ? getDetailedIncomeList(filteredAppointments, activeEmployees, settings)
     : [];
 
+  // 4. Get weekly distribution splits
+  const weeklySplits = settings
+    ? getWeeklySplits(filteredAppointments, activeEmployees, settings, selectedYearMonth)
+    : [];
+
   return {
     allCompletedAppointments: completedAppointments,
     filteredAppointments,
     summary,
     details,
+    weeklySplits,
     isLoading
   };
 };
