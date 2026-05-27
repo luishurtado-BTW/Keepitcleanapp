@@ -12,7 +12,7 @@ export const useIncome = (selectedYearMonth: string) => {
   const [completedAppointments, setCompletedAppointments] = useState<Appointment[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   
-  const { settings, activeTechnicians } = useApp();
+  const { settings, activeEmployees } = useApp();
 
   useEffect(() => {
     const unsub = incomeService.subscribeCompletedAppointments((data) => {
@@ -27,7 +27,7 @@ export const useIncome = (selectedYearMonth: string) => {
 
   // 2. Perform distribution calculations reactively
   const summary = settings
-    ? calculateIncomeDistribution(filteredAppointments, activeTechnicians, settings)
+    ? calculateIncomeDistribution(filteredAppointments, activeEmployees, settings)
     : {
         totalIncome: 0,
         companyPercentage: 30,
@@ -39,7 +39,7 @@ export const useIncome = (selectedYearMonth: string) => {
 
   // 3. Get detailed individual appointments split logs
   const details = settings
-    ? getDetailedIncomeList(filteredAppointments, activeTechnicians, settings)
+    ? getDetailedIncomeList(filteredAppointments, activeEmployees, settings)
     : [];
 
   return {

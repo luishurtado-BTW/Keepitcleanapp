@@ -7,12 +7,17 @@ import { useIncome } from '../hooks/useIncome';
 import { LoadingSpinner } from '../components/shared/LoadingSpinner';
 import { CalendarRange, Sparkles } from 'lucide-react';
 import { formatMonthYear } from '../utils/formatDate';
+import { Modal } from '../components/shared/Modal';
+import { AppointmentForm } from '../components/calendar/AppointmentForm';
+import { Appointment } from '../types/appointment';
 
 export const Income: React.FC = () => {
   // Initialize to current month (Format: YYYY-MM)
   const [selectedMonth, setSelectedMonth] = useState<string>(
     new Date().toISOString().slice(0, 7)
   );
+
+  const [editingAppointment, setEditingAppointment] = useState<Appointment | null>(null);
 
   const { filteredAppointments, summary, isLoading } = useIncome(selectedMonth);
 
@@ -56,10 +61,25 @@ export const Income: React.FC = () => {
 
           {/* 3. Transaction list for completed bookings */}
           <div className="mt-2">
-            <IncomeList appointments={filteredAppointments} />
+            <IncomeList appointments={filteredAppointments} onEdit={setEditingAppointment} />
           </div>
         </>
       )}
+
+      {/* Editing Appointment Modal */}
+      <Modal
+        isOpen={!!editingAppointment}
+        onClose={() => setEditingAppointment(null)}
+        title="Editar Servicio Realizado"
+      >
+        {editingAppointment && (
+          <AppointmentForm
+            appointment={editingAppointment}
+            onSuccess={() => setEditingAppointment(null)}
+            onCancel={() => setEditingAppointment(null)}
+          />
+        )}
+      </Modal>
     </div>
   );
 };

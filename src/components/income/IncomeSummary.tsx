@@ -69,7 +69,7 @@ export const IncomeSummary: React.FC<IncomeSummaryProps> = ({ summary }) => {
         <div className="bg-white border border-slate-100 rounded-2xl p-4 shadow-premium flex flex-col gap-2">
           <div className="flex justify-between items-center">
             <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider">
-              Técnicos
+              Colaboradores
             </span>
             <div className="p-1.5 bg-emerald-50 border border-emerald-100 rounded-lg text-success-500">
               <Users size={14} />
@@ -90,7 +90,7 @@ export const IncomeSummary: React.FC<IncomeSummaryProps> = ({ summary }) => {
       <div className="bg-white border border-slate-100 rounded-2xl p-5 shadow-premium flex flex-col gap-3">
         <h3 className="text-xs font-bold text-slate-800 flex items-center gap-1.5 pb-2.5 border-b border-slate-50">
           <Percent size={14} className="text-success-500" />
-          Desglose Individual de Técnicos
+          Desglose Individual de Colaboradores
         </h3>
 
         {techIds.length > 0 ? (
@@ -105,7 +105,7 @@ export const IncomeSummary: React.FC<IncomeSummaryProps> = ({ summary }) => {
                       {item.name}
                     </span>
                     <span className="text-[9px] font-bold text-slate-400">
-                      Comisión: {item.percentage.toFixed(1)}% de la parte técnica
+                      Comisión: {item.percentage.toFixed(1)}% de la parte de colaboradores
                     </span>
                   </div>
                   <span className="text-xs font-extrabold text-slate-800 flex-shrink-0">
@@ -117,7 +117,7 @@ export const IncomeSummary: React.FC<IncomeSummaryProps> = ({ summary }) => {
           </div>
         ) : (
           <span className="text-[10px] font-semibold text-slate-400 py-2 text-center">
-            No hay técnicos activos registrados para el reparto.
+            No hay colaboradores activos registrados para el reparto.
           </span>
         )}
       </div>

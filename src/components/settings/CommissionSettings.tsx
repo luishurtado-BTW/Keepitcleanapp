@@ -8,7 +8,7 @@ import { ShieldAlert, CheckCircle, Percent } from 'lucide-react';
 
 export const CommissionSettings: React.FC = () => {
   const { settings, updateSettings, isActionLoading } = useSettings();
-  const { activeTechnicians } = useEmployees();
+  const { activeEmployees } = useEmployees();
 
   // Core splits
   const [companyPct, setCompanyPct] = useState('30');
@@ -28,12 +28,12 @@ export const CommissionSettings: React.FC = () => {
       
       // Load custom allocations and convert to string
       const allocations: Record<string, string> = {};
-      activeTechnicians.forEach(t => {
-        allocations[t.id] = String(settings.customDistribution[t.id] || 0);
+      activeEmployees.forEach(e => {
+        allocations[e.id] = String(settings.customDistribution[e.id] || 0);
       });
       setCustomPctAllocations(allocations);
     }
-  }, [settings, activeTechnicians]);
+  }, [settings, activeEmployees]);
 
   // Adjust remaining split percentage when one changes
   const handleCompanyPctChange = (val: string) => {
@@ -73,8 +73,8 @@ export const CommissionSettings: React.FC = () => {
 
     // Convert custom allocations to number record
     const finalCustomDist: Record<string, number> = {};
-    activeTechnicians.forEach(t => {
-      finalCustomDist[t.id] = Number(customPctAllocations[t.id]) || 0;
+    activeEmployees.forEach(e => {
+      finalCustomDist[e.id] = Number(customPctAllocations[e.id]) || 0;
     });
 
     await updateSettings({
@@ -110,7 +110,7 @@ export const CommissionSettings: React.FC = () => {
           />
           <Input
             type="number"
-            label="Parte Técnicos (%)"
+            label="Parte Colaboradores (%)"
             min="0"
             max="100"
             value={employeesPct}
@@ -121,10 +121,10 @@ export const CommissionSettings: React.FC = () => {
 
         {/* 2. Mode Selector */}
         <Select
-          label="Modo de Reparto entre Técnicos"
+          label="Modo de Reparto entre Colaboradores"
           options={[
             { value: 'equal', label: 'Reparto Equitativo (Igual entre activos)' },
-            { value: 'custom', label: 'Porcentajes Personalizados (Por técnico)' }
+            { value: 'custom', label: 'Porcentajes Personalizados (Por colaborador)' }
           ]}
           value={distributionMode}
           onChange={(e) => setDistributionMode(e.target.value as 'equal' | 'custom')}
@@ -135,13 +135,16 @@ export const CommissionSettings: React.FC = () => {
         {distributionMode === 'custom' && (
           <div className="flex flex-col gap-3.5 mt-2 border-t border-slate-50 pt-4 animate-slide-down">
             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
-              Asignación por Técnico (Debe sumar 100%)
+              Asignación por Colaborador (Debe sumar 100%)
             </span>
             
             <div className="flex flex-col gap-3">
-              {activeTechnicians.map(t => (
+              {activeEmployees.map(t => (
                 <div key={t.id} className="flex items-center gap-4 justify-between bg-slate-50 border border-slate-100 rounded-xl px-4 py-1.5">
-                  <span className="text-xs font-bold text-slate-600 truncate">{t.name}</span>
+                  <div className="flex flex-col min-w-0">
+                    <span className="text-xs font-bold text-slate-600 truncate">{t.name}</span>
+                    <span className="text-[8px] font-semibold text-slate-400 leading-none mt-0.5">{t.role}</span>
+                  </div>
                   <div className="w-24 flex-shrink-0">
                     <Input
                       type="number"
@@ -156,9 +159,9 @@ export const CommissionSettings: React.FC = () => {
                   </div>
                 </div>
               ))}
-              {activeTechnicians.length === 0 && (
+              {activeEmployees.length === 0 && (
                 <span className="text-[9px] font-semibold text-slate-400 text-center py-2">
-                  No hay técnicos activos registrados. Agrégalos arriba.
+                  No hay empleados activos registrados. Agrégalos arriba.
                 </span>
               )}
             </div>
@@ -191,7 +194,7 @@ export const CommissionSettings: React.FC = () => {
           type="submit"
           variant="primary"
           isLoading={isActionLoading}
-          disabled={!isCustomAllocValid || activeTechnicians.length === 0}
+          disabled={!isCustomAllocValid || activeEmployees.length === 0}
           className="w-full mt-2 rounded-2xl py-3 font-bold"
         >
           Guardar Configuración de Reparto

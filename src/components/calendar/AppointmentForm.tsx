@@ -19,7 +19,7 @@ export const AppointmentForm: React.FC<AppointmentFormProps> = ({
   onSuccess,
   onCancel
 }) => {
-  const { activeTechnicians, activeServiceTypes } = useApp();
+  const { activeEmployees, activeServiceTypes } = useApp();
   const { addAppointment, updateAppointment, isActionLoading } = useAppointments();
 
   // Form Fields State
@@ -132,10 +132,10 @@ export const AppointmentForm: React.FC<AppointmentFormProps> = ({
     { value: 'Otro', label: 'Otro (Especificar)' }
   ];
 
-  // Compile Technician dropdown list
-  const technicianOptions = [
+  // Compile Employee dropdown list
+  const employeeOptions = [
     { value: '', label: 'Sin Asignar / En espera' },
-    ...activeTechnicians.map(t => ({ value: t.id, label: t.name }))
+    ...activeEmployees.map(t => ({ value: t.id, label: `${t.name} (${t.role})` }))
   ];
 
   // Compile Status Options
@@ -267,8 +267,8 @@ export const AppointmentForm: React.FC<AppointmentFormProps> = ({
       {/* Employee assignment & Status */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <Select
-          label="Técnico Asignado (Opcional)"
-          options={technicianOptions}
+          label="Colaborador Asignado (Opcional)"
+          options={employeeOptions}
           value={assignedEmployee}
           onChange={(e) => setAssignedEmployee(e.target.value)}
         />

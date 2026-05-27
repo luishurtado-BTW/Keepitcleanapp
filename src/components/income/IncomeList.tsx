@@ -2,14 +2,15 @@ import React from 'react';
 import { Appointment } from '../../types/appointment';
 import { formatDate } from '../../utils/formatDate';
 import { formatCurrency } from '../../utils/formatCurrency';
-import { Calendar, User, Tag, ArrowRight } from 'lucide-react';
+import { Edit, Calendar, User, Tag } from 'lucide-react';
 import { EmptyState } from '../shared/EmptyState';
 
 interface IncomeListProps {
   appointments: Appointment[];
+  onEdit?: (appointment: Appointment) => void;
 }
 
-export const IncomeList: React.FC<IncomeListProps> = ({ appointments }) => {
+export const IncomeList: React.FC<IncomeListProps> = ({ appointments, onEdit }) => {
   if (appointments.length === 0) {
     return (
       <EmptyState
@@ -52,9 +53,21 @@ export const IncomeList: React.FC<IncomeListProps> = ({ appointments }) => {
               </div>
             </div>
 
-            <span className="text-xs font-black text-slate-800 flex-shrink-0">
-              {formatCurrency(app.amount)}
-            </span>
+            <div className="flex items-center gap-2 flex-shrink-0">
+              <span className="text-xs font-black text-slate-800">
+                {formatCurrency(app.amount)}
+              </span>
+              {onEdit && (
+                <button
+                  type="button"
+                  onClick={() => onEdit(app)}
+                  className="p-1.5 rounded-lg text-slate-400 hover:text-primary-500 hover:bg-slate-50 transition-colors"
+                  title="Editar servicio"
+                >
+                  <Edit size={14} />
+                </button>
+              )}
+            </div>
           </div>
         ))}
       </div>
@@ -68,6 +81,7 @@ export const IncomeList: React.FC<IncomeListProps> = ({ appointments }) => {
               <th className="px-6 py-4">Servicio</th>
               <th className="px-6 py-4">Cliente</th>
               <th className="px-6 py-4 text-right">Monto</th>
+              {onEdit && <th className="px-6 py-4 text-center w-20">Acciones</th>}
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100 font-semibold text-slate-700">
@@ -79,6 +93,18 @@ export const IncomeList: React.FC<IncomeListProps> = ({ appointments }) => {
                 <td className="px-6 py-4 text-right font-black text-slate-800">
                   {formatCurrency(app.amount)}
                 </td>
+                {onEdit && (
+                  <td className="px-6 py-4 text-center">
+                    <button
+                      type="button"
+                      onClick={() => onEdit(app)}
+                      className="p-1.5 rounded-lg text-slate-400 hover:text-primary-500 hover:bg-slate-50 transition-colors inline-flex"
+                      title="Editar servicio"
+                    >
+                      <Edit size={14} />
+                    </button>
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>

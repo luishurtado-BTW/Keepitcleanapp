@@ -32,7 +32,7 @@ export const DistributionCard: React.FC<DistributionCardProps> = ({ summary }) =
         <div
           style={{ width: `${employeesPercentage}%` }}
           className="bg-success-500 transition-all duration-300"
-          title={`Técnicos (${employeesPercentage}%)`}
+          title={`Colaboradores (${employeesPercentage}%)`}
         />
       </div>
 
@@ -51,7 +51,7 @@ export const DistributionCard: React.FC<DistributionCardProps> = ({ summary }) =
         <div className="flex items-start gap-2 min-w-0">
           <span className="w-2.5 h-2.5 rounded bg-success-500 mt-0.5 flex-shrink-0" />
           <div className="flex flex-col min-w-0 leading-none">
-            <span className="text-slate-700 truncate">Técnicos ({employeesPercentage}%)</span>
+            <span className="text-slate-700 truncate">Colaboradores ({employeesPercentage}%)</span>
             <span className="text-slate-400 font-semibold mt-1">{formatCurrency(employeesShare)}</span>
           </div>
         </div>
